@@ -8,6 +8,8 @@ namespace UnityEngine.UI.Extensions {
 		public Camera camera;
 		public GameObject background;
 
+		GUIStyle backColor;
+
 //		SelectionBox sb;
 		UnitControl[] ob;
 
@@ -42,12 +44,87 @@ namespace UnityEngine.UI.Extensions {
 						if(Physics.Raycast(ray, out hit)){
 							exs.wayPointSet(hit.point);
 						}
-//						exs.movement();
-
 					}
 				}
 
 			}
+		}
+
+		void OnGUI(){
+			int nameGap, hpGap;
+			int nameWidth, nameHeight, hpWidth, hpHeight;
+			
+			GUIStyle allingCenter = GUI.skin.GetStyle ("Label");
+			allingCenter.alignment = TextAnchor.UpperCenter;
+
+			foreach (UnitControl ogui in ob) {
+				string typeName = ogui.getName();
+				int Hp = ogui.getCurrentHP();
+				int maxHp = ogui.getMaxHp();
+
+				Vector3 target = ogui.getPosition();
+				target = Camera.main.WorldToScreenPoint (target);
+				target.y = Screen.height - target.y;
+				
+				if (typeName == "cube") {
+					nameGap = 44;
+					hpGap = 30;
+					nameWidth = 50;
+					nameHeight = 20;
+					hpWidth = 70;
+					hpHeight = 20;
+				} else if (typeName == "cylinder") {
+					nameGap = 54;
+					hpGap = 40;
+					nameWidth = 50;
+					nameHeight = 20;
+					hpWidth = 70;
+					hpHeight = 20;
+				} else if (typeName == "sphere") {
+					nameGap = 44;
+					hpGap = 30;
+					nameWidth = 50;
+					nameHeight = 20;
+					hpWidth = 70;
+					hpHeight = 20;
+				} else {
+					nameGap = 82;
+					hpGap = 68;
+					nameWidth = 50;
+					nameHeight = 20;
+					hpWidth = 70;
+					hpHeight = 20;
+					
+				}
+				
+				GUI.Label (new Rect(target.x - nameWidth/2, target.y-nameGap, nameWidth, nameHeight), typeName, allingCenter);
+				GUI.Label (new Rect(target.x - hpWidth/2, target.y-hpGap, hpWidth, hpHeight), Hp+" / "+maxHp, allingCenter);
+				
+				
+				barBox ();
+				
+				GUI.Box (new Rect(target.x - hpWidth/2, target.y-hpGap + 5, 70, 16), "", backColor);
+			}
+
+		}
+		
+		void barBox(){
+			if (backColor == null) {
+				backColor = new GUIStyle(GUI.skin.box);
+				backColor.normal.background = MakeTex(2, 2, new Color(0f, 1f, 0f, 0.5f));
+			}
+		}
+		
+		private Texture2D MakeTex( int width, int height, Color col ){
+			Color[] pix = new Color[width * height];
+			for( int i = 0; i < pix.Length; ++i )
+			{
+				pix[ i ] = col;
+			}
+			Texture2D result = new Texture2D( width, height );
+			result.SetPixels( pix );
+			result.Apply();
+			return result;
 		}
 	}
 }

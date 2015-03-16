@@ -21,8 +21,11 @@ public class ViewRange : MonoBehaviour {
 
 	void OnTriggerStay(Collider other){
 //		Debug.Log ("collide object : "+other.name);
-		if (other.name == "Cube2") {
-			Debug.Log("cube2");
+//		if (other.name == "Cube") {
+//			Debug.Log("cube");
+//			uc.attackRotation(other.gameObject.transform.position);
+//		}
+		if(other.tag == "Enemy"){
 			uc.attackRotation(other.gameObject.transform.position);
 		}
 	}
