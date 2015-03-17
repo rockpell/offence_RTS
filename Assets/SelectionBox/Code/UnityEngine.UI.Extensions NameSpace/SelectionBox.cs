@@ -155,6 +155,10 @@ namespace UnityEngine.UI.Extensions {
 			boxRect.pivot = Vector2.zero;
 			boxRect.gameObject.SetActive(false);
 		}
+
+		void AttackRange(){
+
+		}
 		
 		
 		void BeginSelection(){

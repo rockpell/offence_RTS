@@ -20,6 +20,22 @@ public class EnemyControl : MonoBehaviour {
 		Hp -= damage;
 	}
 
+	public Vector3 getPosition(){
+		return transform.position;
+	}
+	
+	public string getName(){
+		return typeName;
+	}
+	
+	public int getCurrentHP(){
+		return Hp;
+	}
+	
+	public int getMaxHp(){
+		return maxHp;
+	}
+
 	void unitDead(){
 		if (Hp == 0) {
 			Object.Destroy(this.gameObject);

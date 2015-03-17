@@ -36,8 +36,8 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 	bool moveStop, attackPermission = true;
 //	float distance;
 	float distCovered;
-	int segments;
-	float radius;
+	int segments, Asegments;
+	float radius, Aradius;
 
 //	private ViewRange vr;
 
@@ -58,6 +58,7 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 
 		settingCircle ();
 		createPoints ();
+
 		if(Hp == 0)
 			Hp = maxHp;
 	}
