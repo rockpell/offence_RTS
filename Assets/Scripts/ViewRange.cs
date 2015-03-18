@@ -4,6 +4,7 @@ using System.Collections;
 public class ViewRange : MonoBehaviour {
 
 	UnitControl uc;
+	EnemyControl ec;
 
 	LineRenderer aline;
 
@@ -12,11 +13,23 @@ public class ViewRange : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		SphereCollider arangeC = gameObject.GetComponent<SphereCollider> ();
+
+//		uc = (UnitControl)transform.GetComponent (typeof(UnitControl));
 		uc = (UnitControl)transform.parent.GetComponent (typeof(UnitControl));
+		if(uc != null)
+			setAttackRange (arangeC, uc.getName());
+
+		if (uc == null) {
+			ec = (EnemyControl)transform.parent.GetComponent(typeof(EnemyControl));
+			setAttackRange (arangeC, ec.getName());
+		}
+
 		aline = gameObject.AddComponent<LineRenderer> ();
 
-		settingACircle ();
+		settingACircle (arangeC);
 		createPoints ();
+
 	}
 	
 	// Update is called once per frame
@@ -30,12 +43,16 @@ public class ViewRange : MonoBehaviour {
 
 	void OnTriggerStay(Collider other){
 //		Debug.Log ("collide object : "+other.name);
-//		if (other.name == "Cube") {
-//			Debug.Log("cube");
-//			uc.attackRotation(other.gameObject.transform.position);
-//		}
-		if(other.tag == "Enemy"){
-			uc.attackRotation(other.gameObject.transform.position);
+		if (ec != null) {
+			if (other.tag == "Player") {
+				ec.attackRotation (other.gameObject.transform.position);
+			}
+		}
+
+		if (uc != null) {
+			if (other.tag == "Enemy") {
+				uc.attackRotation (other.gameObject.transform.position);
+			}
 		}
 	}
 
@@ -62,10 +79,19 @@ public class ViewRange : MonoBehaviour {
 		}
 	}
 
-	void settingACircle(){
-		SphereCollider arangeC = gameObject.GetComponent<SphereCollider> ();
+	void settingACircle(SphereCollider arangeC){
 		radius = arangeC.radius;
 		segments = 80;
+	}
+
+	void setAttackRange(SphereCollider arangeC, string tname){
+		if (tname == "tank") {
+			arangeC.radius = 4.5f;
+		} else if (tname == "cube") {
+			arangeC.radius = 3.5f;
+		} else {
+			arangeC.radius = 3.0f;
+		}
 	}
 
 }

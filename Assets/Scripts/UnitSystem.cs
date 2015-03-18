@@ -14,6 +14,9 @@ namespace UnityEngine.UI.Extensions {
 		UnitControl[] ob;
 		EnemyControl[] ec;
 
+		int segments;
+		float radius;
+
 		// Use this for initialization
 		void Start () {
 //			sb = SelectionBox.instance;
@@ -50,6 +53,7 @@ namespace UnityEngine.UI.Extensions {
 				}
 
 			}
+
 		}
 
 		void OnGUI(){
@@ -107,6 +111,10 @@ namespace UnityEngine.UI.Extensions {
 				barBox ();
 				
 				GUI.Box (new Rect(target.x - HpWidth/2, target.y-hpGap + 5, HpBarWidth, 14), "", backColor);
+
+//				string tname = 
+				settingCircle(ogui.getName());
+				createPoints(ogui.getLine());
 			}
 
 			if (ec != null) {
@@ -122,7 +130,7 @@ namespace UnityEngine.UI.Extensions {
 					if (typeName == "enemy_001") {
 						nameGap = 44;
 						hpGap = 30;
-						nameWidth = 50;
+						nameWidth = 68;
 						nameHeight = 20;
 						HpWidth = 70;
 						HpHeight = 20;
@@ -161,6 +169,41 @@ namespace UnityEngine.UI.Extensions {
 			result.SetPixels( pix );
 			result.Apply();
 			return result;
+		}
+
+		void createPoints(LineRenderer line){
+			float x, y, z = 0f;
+			float angle = 20f;
+			
+			line.SetVertexCount (segments + 1);
+			line.useWorldSpace = false;
+			line.material = new Material (Shader.Find ("Particles/Additive"));
+			line.SetColors (Color.green, Color.green);
+			
+			for (int i = 0; i < (segments + 1); i++) {
+				x = Mathf.Sin(Mathf.Deg2Rad * angle) * radius;
+				y = Mathf.Cos(Mathf.Deg2Rad * angle) * radius;
+				
+				line.SetPosition(i, new Vector3(x, y, z));
+				
+				angle += (360f / segments);
+			}
+		}
+		
+		void settingCircle(string typeName){
+			if (typeName == "cube") {
+				segments = 30;
+				radius = 1.0f;
+			} else if (typeName == "cylinder") {
+				segments = 35;
+				radius = 1.1f;
+			} else if (typeName == "sphere") {
+				segments = 30;
+				radius = 0.6f;
+			} else {
+				segments = 40;
+				radius = 2.0f;
+			}
 		}
 	}
 }
