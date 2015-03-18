@@ -44,6 +44,7 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 	GUIStyle backColor;
 
 	private GameObject bullet1;
+	private GameObject damageText;
 
 	LineRenderer line;
 
@@ -54,6 +55,7 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 
 //		vr = (ViewRange)transform.FindChild ("viewRange").GetComponent (typeof(ViewRange));
 		bullet1 = Resources.Load("projectile_001", typeof(GameObject)) as GameObject;
+		damageText = Resources.Load ("DamageNumber", typeof(GameObject)) as GameObject;
 		line = gameObject.AddComponent<LineRenderer> ();
 
 //		settingCircle ();
@@ -63,7 +65,7 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 			Hp = maxHp;
 	}
 
-	void Update () {
+	void FixedUpdate() {
 
 		if (selected) {
 			line.enabled = true;
@@ -107,6 +109,7 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 
 	public void applayDamage(int damage){
 		Hp -= damage;
+		damageTextShow (damage);
 	}
 
 	public Vector3 getPosition(){
@@ -146,4 +149,9 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 		bc1.setTarget ("Enemy");
 	}
 
+	void damageTextShow(int damage){
+		Vector3 pos = Camera.main.WorldToViewportPoint (transform.position);
+		GameObject text = Instantiate (damageText, pos, Quaternion.identity) as GameObject;
+		text.SendMessage ("setStartNumber", "-"+damage);
+	}
 }

@@ -12,12 +12,14 @@ public class EnemyControl : MonoBehaviour {
 	LineRenderer line;
 
 	private GameObject bullet1;
+	private GameObject damageText;
 
 	// Use this for initialization
 	void Start () {
 		Hp = maxHp;
 		line = gameObject.AddComponent<LineRenderer> ();
 		bullet1 = Resources.Load("projectile_001", typeof(GameObject)) as GameObject;
+		damageText = Resources.Load ("DamageNumber", typeof(GameObject)) as GameObject;
 	}
 	
 	// Update is called once per frame
@@ -39,6 +41,7 @@ public class EnemyControl : MonoBehaviour {
 
 	public void applayDamage(int damage){
 		Hp -= damage;
+		damageTextShow (damage);
 	}
 
 	public Vector3 getPosition(){
@@ -72,5 +75,11 @@ public class EnemyControl : MonoBehaviour {
 		BulletControl bc1 = abc.GetComponent (typeof(BulletControl)) as BulletControl;
 		bc1.setDirection (transform.position, target);
 		bc1.setTarget ("Player");
+	}
+
+	void damageTextShow(int damage){
+		Vector3 pos = Camera.main.WorldToViewportPoint (transform.position);
+		GameObject text = Instantiate (damageText, pos, Quaternion.identity) as GameObject;
+		text.SendMessage ("setStartNumber", "-"+damage);
 	}
 }

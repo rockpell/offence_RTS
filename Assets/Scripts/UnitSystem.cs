@@ -30,7 +30,7 @@ namespace UnityEngine.UI.Extensions {
 		}
 
 		// Update is called once per frame
-		void Update () {
+		void Update() {
 
 			Vector3 pos = Input.mousePosition;
 			pos.z = 1.0f;
