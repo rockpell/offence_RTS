@@ -86,9 +86,15 @@ public class ViewRange : MonoBehaviour {
 
 	void setAttackRange(SphereCollider arangeC, string tname){
 		if (tname == "tank") {
-			arangeC.radius = 4.5f;
+			arangeC.radius = 5.8f;
 		} else if (tname == "cube") {
-			arangeC.radius = 3.5f;
+			arangeC.radius = 3.8f;
+		} else if(tname == "sphere"){
+			arangeC.radius = 4.1f;
+		} else if(tname == "cylinder"){
+			arangeC.radius = 4.5f;
+		} else if(tname == "enemy_001"){
+			arangeC.radius = 4.0f;
 		} else {
 			arangeC.radius = 3.0f;
 		}

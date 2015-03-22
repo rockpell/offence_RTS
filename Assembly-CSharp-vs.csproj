@@ -51,6 +51,7 @@
      <Compile Include="Assets\Scripts\Circle.cs" />
      <Compile Include="Assets\Scripts\DamageNumbering.cs" />
      <Compile Include="Assets\Scripts\EnemyControl.cs" />
+     <Compile Include="Assets\Scripts\EnemySystem.cs" />
      <Compile Include="Assets\Scripts\FPS.cs" />
      <Compile Include="Assets\Scripts\UnitControl.cs" />
      <Compile Include="Assets\Scripts\UnitSystem.cs" />

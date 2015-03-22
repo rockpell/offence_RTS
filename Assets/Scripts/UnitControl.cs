@@ -32,12 +32,15 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 	public float moveSpeed = 1.0f, attackSpeed = 5.0f;
 	public int Hp = 0, maxHp = 100;
 	public string typeName;
-	Vector3 targetPoint, startPoint;
+
+	Vector3 targetPoint;
+
 	bool moveStop, attackPermission = true;
-//	float distance;
-	float distCovered;
+
 	int segments;
-	float radius;
+
+	float distCovered;
+	float remainTime = 0f;
 
 //	private ViewRange vr;
 
@@ -61,6 +64,8 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 //		settingCircle ();
 //		createPoints ();
 
+		hpSet ();
+
 		if(Hp == 0)
 			Hp = maxHp;
 	}
@@ -81,11 +86,16 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 
 		if(moveStop){
 			distCovered = moveSpeed * Time.deltaTime*10;
-//			transform.position = Vector3.Lerp(startPoint, targetPoint, distCovered/distance);
 			transform.position = Vector3.MoveTowards(transform.position, targetPoint, distCovered);
 		}
 
 		uintDead ();
+
+		if (remainTime > 0) {
+			remainTime -= Time.deltaTime;
+		} else if(remainTime <= 0){
+			attackPermissionTrue();
+		}
 	}
 	
 	void OnCollisionEnter(Collision collision){
@@ -95,14 +105,15 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 	public void wayPointSet(Vector3 pos){
 		targetPoint = pos;
 		targetPoint.z = 0;
-		startPoint = transform.position;
 	}
 
 	public void attackRotation(Vector3 target){
 		if(attackPermission){
 			attackPermission = false;
 			attack1 (target);
-			Invoke("attackPermissionTrue", attackSpeed);
+//			Invoke("attackPermissionTrue", attackSpeed);
+			remainTime = attackSpeed;
+//			Debug.Log(Time.time);
 		}
 
 	}
@@ -110,6 +121,14 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 	public void applayDamage(int damage){
 		Hp -= damage;
 		damageTextShow (damage);
+	}
+
+	public float getAttackSpeed(){
+		return attackSpeed;
+	}
+
+	public float getRemainAttackTime(){
+		return remainTime;
 	}
 
 	public Vector3 getPosition(){
@@ -140,6 +159,7 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 
 	void attackPermissionTrue(){
 		attackPermission = true;
+		remainTime = 0f;
 	}
 
 	void attack1(Vector3 target){
@@ -153,5 +173,19 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 		Vector3 pos = Camera.main.WorldToViewportPoint (transform.position);
 		GameObject text = Instantiate (damageText, pos, Quaternion.identity) as GameObject;
 		text.SendMessage ("setStartNumber", "-"+damage);
+	}
+
+	void hpSet(){
+		if (typeName == "cube") {
+			maxHp = 120;
+		} else if (typeName == "sphere") {
+			maxHp = 130;
+		} else if (typeName == "cylinder") {
+			maxHp = 150;
+		} else if (typeName == "tank") {
+			maxHp = 200;
+		} else {
+			maxHp = 100;
+		}
 	}
 }
