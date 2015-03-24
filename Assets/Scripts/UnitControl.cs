@@ -165,7 +165,7 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 	void attack1(Vector3 target){
 		GameObject abc = Instantiate (bullet1, transform.position, Quaternion.identity) as GameObject;
 		BulletControl bc1 = abc.GetComponent (typeof(BulletControl)) as BulletControl;
-		bc1.setDirection (transform.position, target);
+		bc1.setDirection (transform.position, hittingRatio(target));
 		bc1.setTarget ("Enemy");
 	}
 
@@ -187,5 +187,14 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 		} else {
 			maxHp = 100;
 		}
+	}
+
+	Vector3 hittingRatio(Vector3 point){
+		float number1 = Random.Range (-10f, 10f);
+		float number2 = Random.Range (-10f, 10f);
+
+		Vector3 result = new Vector3 (point.x + number1, point.y + number2, 0);
+
+		return result;
 	}
 }
