@@ -10,7 +10,7 @@ public class EnemyControl : MonoBehaviour {
 	bool attackPermission = true;
 	bool moveStop;
 
-	float remainTime = 0f, distCovered;
+	float remainTime = 0f, distCovered, callTemp = 0f;
 
 	LineRenderer line;
 
@@ -18,6 +18,10 @@ public class EnemyControl : MonoBehaviour {
 	private GameObject damageText;
 
 	private Vector3 targetPoint;
+
+	UnitControl[] units;
+
+	UnitSystem us;
 
 	// Use this for initialization
 	void Start () {
@@ -32,6 +36,8 @@ public class EnemyControl : MonoBehaviour {
 		hpSet ();
 		if(Hp == 0)
 			Hp = maxHp;
+
+		us = UnitSystem.instance;
 	}
 	
 	// Update is called once per frame
@@ -51,10 +57,20 @@ public class EnemyControl : MonoBehaviour {
 		}
 		
 		if(moveStop){
-			distCovered = moveSpeed * Time.deltaTime*10;
+			distCovered = moveSpeed * Time.deltaTime * 10;
 			transform.position = Vector3.MoveTowards(transform.position, targetPoint, distCovered);
 		}
 
+		callTemp += Time.deltaTime;
+
+		if (callTemp > 1.0f) {
+			callTemp = 0f;
+			units = us.getUnits();
+			targetPoint = calDistanceAll(units);
+			if(targetPoint.z != -9999){
+				wayPointSet(targetPoint);
+			}
+		}
 	}
 
 	public void attackRotation(Vector3 target){
@@ -134,6 +150,26 @@ public class EnemyControl : MonoBehaviour {
 		} else {
 			maxHp = 100;
 		}
+	}
+
+	Vector3 calDistanceAll(UnitControl[] units){
+		float lastDis = 1000f, temp;
+		Vector3 targetPosition = new Vector3(0, 0, -9999);
+
+		foreach(UnitControl uc in units){
+			temp = calDistance(uc);
+			if(temp < lastDis){
+				lastDis = temp;
+				targetPoint = uc.transform.position;
+			}
+
+		}
+
+		return targetPoint;
+	}
+	
+	float calDistance(UnitControl uin){
+		return Vector3.Distance (transform.position, uin.transform.position);
 	}
 
 }

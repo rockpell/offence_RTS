@@ -4,7 +4,7 @@ using System.Collections;
 public class UnitSystem : MonoBehaviour {
 
 	private static UnitSystem _instance;
-	public static UnitSystem intstance{
+	public static UnitSystem instance{
 		get{
 			if(!_instance){
 				_instance = GameObject.FindObjectOfType(typeof(UnitSystem)) as UnitSystem;

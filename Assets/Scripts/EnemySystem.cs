@@ -10,7 +10,7 @@ public class EnemySystem : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		us = UnitSystem.intstance;
+		us = UnitSystem.instance;
 	}
 	
 	// Update is called once per frame
@@ -18,4 +18,15 @@ public class EnemySystem : MonoBehaviour {
 		uc = us.getUnits ();
 		ec = us.getEnemy ();
 	}
+
+	void calDistanceAll(EnemyControl en, UnitControl[] units){
+		foreach(UnitControl uc in units){
+			calDistance(en, uc);
+		}
+	}
+
+	float calDistance(EnemyControl en, UnitControl uin){
+		return Vector3.Distance (en.transform.position, uin.transform.position);
+	}
+
 }
