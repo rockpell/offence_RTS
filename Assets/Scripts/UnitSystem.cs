@@ -23,7 +23,7 @@ public class UnitSystem : MonoBehaviour {
 	public Camera camera;
 	public GameObject background;
 
-	GUIStyle backColor;
+	GUIStyle backColor, ShiledBackColor;
 
 //		SelectionBox sb;
 	UnitControl[] ob;
@@ -72,7 +72,7 @@ public class UnitSystem : MonoBehaviour {
 	}
 
 	void OnGUI(){
-		int nameGap, hpGap;
+		int nameGap, hpGap, shieldGap;
 		int nameWidth, nameHeight, HpWidth, HpHeight;
 		int HpBarWidth = 70;
 		
@@ -85,35 +85,41 @@ public class UnitSystem : MonoBehaviour {
 			float maxHp = ogui.getMaxHp();
 			float speedTime = ogui.getAttackSpeed();
 			float remainTime = ogui.getRemainAttackTime();
+			float Shield = ogui.getCurrentShiled();
+			float maxShield = ogui.getMaxShield();
 
 			Vector3 target = ogui.getPosition();
 			target = Camera.main.WorldToScreenPoint (target);
 			target.y = Screen.height - target.y;
 			
 			if (typeName == "cube") {
-				nameGap = 46;
-				hpGap = 32;
+				nameGap = 66;
+				hpGap = 52;
+				shieldGap = 32;
 				nameWidth = 50;
 				nameHeight = 20;
 				HpWidth = 70;
 				HpHeight = 20;
 			} else if (typeName == "cylinder") {
-				nameGap = 57;
-				hpGap = 43;
+				nameGap = 79;
+				hpGap = 65;
+				shieldGap = 45;
 				nameWidth = 50;
 				nameHeight = 20;
 				HpWidth = 70;
 				HpHeight = 20;
 			} else if (typeName == "sphere") {
-				nameGap = 45;
-				hpGap = 31;
+				nameGap = 65;
+				hpGap = 51;
+				shieldGap = 31;
 				nameWidth = 50;
 				nameHeight = 20;
 				HpWidth = 70;
 				HpHeight = 20;
 			} else {
-				nameGap = 82;
-				hpGap = 68;
+				nameGap = 102;
+				hpGap = 88;
+				shieldGap = 68;
 				nameWidth = 50;
 				nameHeight = 20;
 				HpWidth = 70;
@@ -121,13 +127,15 @@ public class UnitSystem : MonoBehaviour {
 				
 			}
 			
-			GUI.Label (new Rect(target.x - nameWidth/2, target.y-nameGap, nameWidth, nameHeight), typeName, allingCenter);
-			GUI.Label (new Rect(target.x - HpWidth/2, target.y-hpGap, HpWidth, HpHeight), Hp+" / "+maxHp, allingCenter);
+			GUI.Label (new Rect(target.x - nameWidth/2, target.y - nameGap, nameWidth, nameHeight), typeName, allingCenter);
+			GUI.Label (new Rect(target.x - HpWidth/2, target.y - hpGap, HpWidth, HpHeight), Hp+" / "+maxHp, allingCenter);
+			GUI.Label (new Rect(target.x - HpWidth/2, target.y - shieldGap, HpWidth, HpHeight), Shield + " / " + maxShield, allingCenter);
 
 			
 			barBox ();
 			
-			GUI.Box (new Rect(target.x - HpWidth/2, target.y-hpGap + 5, HpBarWidth * (Hp / maxHp), 14), "", backColor);
+			GUI.Box (new Rect(target.x - HpWidth/2, target.y - hpGap + 5, HpBarWidth * (Hp / maxHp), 14), "", backColor);
+			GUI.Box (new Rect(target.x - HpWidth/2, target.y - shieldGap + 3, HpBarWidth * (Shield / maxShield), 14), "", ShiledBackColor);
 
 			if(remainTime != 0)
 				GUI.Box(new Rect(target.x - 35, target.y + 25, 5 + 50 * (remainTime / speedTime), 8), "", backColor);
@@ -143,21 +151,25 @@ public class UnitSystem : MonoBehaviour {
 				float maxHp = ecui.getMaxHp ();
 				float speedTime = ecui.getAttackSpeed();
 				float remainTime = ecui.getRemainAttackTime();
+				float Shield = ecui.getCurrentShield();
+				float maxShield = ecui.getMaxShield();
 				
 				Vector3 target = ecui.getPosition ();
 				target = Camera.main.WorldToScreenPoint (target);
 				target.y = Screen.height - target.y;
 
 				if (typeName == "enemy_001") {
-					nameGap = 46;
-					hpGap = 32;
+					nameGap = 66;
+					hpGap = 52;
+					shieldGap = 32;
 					nameWidth = 68;
 					nameHeight = 20;
 					HpWidth = 70;
 					HpHeight = 20;
 				} else {
-					nameGap = 82;
-					hpGap = 68;
+					nameGap = 102;
+					hpGap = 88;
+					shieldGap = 68;
 					nameWidth = 50;
 					nameHeight = 20;
 					HpWidth = 70;
@@ -166,8 +178,10 @@ public class UnitSystem : MonoBehaviour {
 
 				GUI.Label (new Rect (target.x - nameWidth / 2, target.y - nameGap, nameWidth, nameHeight), typeName, allingCenter);
 				GUI.Label (new Rect (target.x - HpWidth / 2, target.y - hpGap, HpWidth, HpHeight), Hp + " / " + maxHp, allingCenter);
+				GUI.Label(new Rect(target.x - HpWidth / 2, target.y - shieldGap, HpWidth, HpHeight), Shield + " / " + maxShield, allingCenter);
 				
 				GUI.Box (new Rect (target.x - HpWidth / 2, target.y - hpGap + 5, HpBarWidth * (Hp / maxHp), 14), "", backColor);
+				GUI.Box (new Rect(target.x - HpWidth/2, target.y - shieldGap + 3, HpBarWidth * (Shield / maxShield), 14), "", ShiledBackColor);
 
 				if(remainTime != 0)
 					GUI.Box(new Rect(target.x - 35, target.y + 25, 5 + 50 * (remainTime / speedTime), 8), "", backColor);
@@ -180,6 +194,11 @@ public class UnitSystem : MonoBehaviour {
 		if (backColor == null) {
 			backColor = new GUIStyle(GUI.skin.box);
 			backColor.normal.background = MakeTex(2, 2, new Color(0f, 1f, 0f, 0.5f));
+		}
+
+		if (ShiledBackColor == null) {
+			ShiledBackColor = new GUIStyle(GUI.skin.box);
+			ShiledBackColor.normal.background = MakeTex(2, 2, new Color(0f, 0f, 1f, 0.5f));
 		}
 	}
 	

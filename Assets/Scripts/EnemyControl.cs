@@ -3,7 +3,7 @@ using System.Collections;
 
 public class EnemyControl : MonoBehaviour {
 
-	public int Hp, maxHp = 100;
+	public int Hp, maxHp = 100, Shield, maxShield = 100;
 	public string typeName;
 	public float moveSpeed = 1.0f, attackSpeed = 5.0f;
 
@@ -33,9 +33,12 @@ public class EnemyControl : MonoBehaviour {
 		bullet1 = Resources.Load("projectile_001", typeof(GameObject)) as GameObject;
 		damageText = Resources.Load ("DamageNumber", typeof(GameObject)) as GameObject;
 
-		hpSet ();
+		unitSetting ();
+
 		if(Hp == 0)
 			Hp = maxHp;
+		if (Shield == 0)
+			Shield = maxShield;
 
 		us = UnitSystem.instance;
 	}
@@ -93,7 +96,16 @@ public class EnemyControl : MonoBehaviour {
 	}
 
 	public void applayDamage(int damage){
-		Hp -= damage;
+		if (Shield == 0) {
+			Hp -= damage;
+		} else {
+			Shield -= damage;
+			if(Shield < 0){
+				Hp += Shield;
+				Shield = 0;
+			}
+		}
+		
 		damageTextShow (damage);
 	}
 
@@ -121,6 +133,14 @@ public class EnemyControl : MonoBehaviour {
 		return maxHp;
 	}
 
+	public int getCurrentShield(){
+		return Shield;
+	}
+
+	public int getMaxShield(){
+		return maxShield;
+	}
+
 	public LineRenderer getLine(){
 		return line;
 	}
@@ -144,11 +164,13 @@ public class EnemyControl : MonoBehaviour {
 		text.SendMessage ("setStartNumber", "-"+damage);
 	}
 
-	void hpSet(){
+	void unitSetting(){
 		if (typeName == "enemy_001") {
 			maxHp = 120;
+			maxShield = 100;
 		} else {
 			maxHp = 100;
+			maxShield = 100;
 		}
 	}
 

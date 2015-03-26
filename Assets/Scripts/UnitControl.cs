@@ -30,11 +30,12 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 	#endregion
 
 	public float moveSpeed = 1.0f, attackSpeed = 5.0f;
-	public int Hp = 0, maxHp = 100;
+	public int Hp = 0, maxHp = 100, Shield = 0, maxShield = 100;
 	public string typeName;
 
 	Vector3 targetPoint;
-
+	Vector3 np;
+	
 	bool moveStop, attackPermission = true;
 
 	int segments;
@@ -64,10 +65,12 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 //		settingCircle ();
 //		createPoints ();
 
-		hpSet ();
+		unitSetting ();
 
 		if(Hp == 0)
 			Hp = maxHp;
+		if (Shield == 0)
+			Shield = maxShield;
 	}
 
 	void FixedUpdate() {
@@ -87,6 +90,7 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 		if(moveStop){
 			distCovered = moveSpeed * Time.deltaTime*10;
 			transform.position = Vector3.MoveTowards(transform.position, targetPoint, distCovered);
+//			rigidbody.MovePosition(transform.position + np * distCovered);
 		}
 
 		uintDead ();
@@ -105,6 +109,8 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 	public void wayPointSet(Vector3 pos){
 		targetPoint = pos;
 		targetPoint.z = 0;
+		np = Vector3.Normalize(targetPoint - transform.position);
+//		Debug.Log ("target position : " + targetPoint);
 	}
 
 	public void attackRotation(Vector3 target){
@@ -119,7 +125,16 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 	}
 
 	public void applayDamage(int damage){
-		Hp -= damage;
+		if (Shield == 0) {
+			Hp -= damage;
+		} else {
+			Shield -= damage;
+			if(Shield < 0){
+				Hp += Shield;
+				Shield = 0;
+			}
+		}
+
 		damageTextShow (damage);
 	}
 
@@ -145,6 +160,14 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 
 	public int getMaxHp(){
 		return maxHp;
+	}
+
+	public int getCurrentShiled(){
+		return Shield;
+	}
+
+	public int getMaxShield(){
+		return maxShield;
 	}
 
 	public LineRenderer getLine(){
@@ -175,17 +198,27 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 		text.SendMessage ("setStartNumber", "-"+damage);
 	}
 
-	void hpSet(){
+	void unitSetting(){
 		if (typeName == "cube") {
 			maxHp = 120;
+			maxShield = 100;
+			moveSpeed = 1.8f;
 		} else if (typeName == "sphere") {
 			maxHp = 130;
+			maxShield = 100;
+			moveSpeed = 1.5f;
 		} else if (typeName == "cylinder") {
 			maxHp = 150;
+			maxShield = 100;
+			moveSpeed = 1.2f;
 		} else if (typeName == "tank") {
 			maxHp = 200;
+			maxShield = 300;
+			moveSpeed = 0.8f;
 		} else {
 			maxHp = 100;
+			maxShield = 100;
+			moveSpeed = 1.0f;
 		}
 	}
 
