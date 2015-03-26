@@ -34,7 +34,7 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 	public string typeName;
 
 	Vector3 targetPoint;
-	Vector3 np;
+//	Vector3 np;
 	
 	bool moveStop, attackPermission = true;
 
@@ -108,8 +108,8 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 
 	public void wayPointSet(Vector3 pos){
 		targetPoint = pos;
-		targetPoint.z = 0;
-		np = Vector3.Normalize(targetPoint - transform.position);
+		targetPoint.y = 50;
+//		np = Vector3.Normalize(targetPoint - transform.position);
 //		Debug.Log ("target position : " + targetPoint);
 	}
 
@@ -226,7 +226,7 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 		float number1 = Random.Range (-10f, 10f);
 		float number2 = Random.Range (-10f, 10f);
 
-		Vector3 result = new Vector3 (point.x + number1, point.y + number2, 0);
+		Vector3 result = new Vector3 (point.x + number1, point.y, point.z + number2);
 
 		return result;
 	}

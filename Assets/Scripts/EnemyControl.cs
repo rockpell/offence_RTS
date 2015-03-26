@@ -92,7 +92,7 @@ public class EnemyControl : MonoBehaviour {
 
 	public void wayPointSet(Vector3 pos){
 		targetPoint = pos;
-		targetPoint.z = 0;
+		targetPoint.y = 50;
 	}
 
 	public void applayDamage(int damage){
@@ -198,7 +198,7 @@ public class EnemyControl : MonoBehaviour {
 		float number1 = Random.Range (-10f, 10f);
 		float number2 = Random.Range (-10f, 10f);
 		
-		Vector3 result = new Vector3 (point.x + number1, point.y + number2, 0);
+		Vector3 result = new Vector3 (point.x + number1, point.y, point.z + number2);
 		
 		return result;
 	}

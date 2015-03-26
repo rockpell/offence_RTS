@@ -47,8 +47,8 @@ public class UnitSystem : MonoBehaviour {
 	// Update is called once per frame
 	void Update() {
 
-		Vector3 pos = Input.mousePosition;
-		pos.z = 1.0f;
+//		Vector3 pos = Input.mousePosition;
+//		pos.z = 1.0f;
 		
 //			Vector3 stwp = camera.ScreenToWorldPoint(pos);
 
