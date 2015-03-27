@@ -29,7 +29,7 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 	}
 	#endregion
 
-	public float moveSpeed = 1.0f, attackSpeed = 5.0f;
+	public float moveSpeed = 1.0f, attackSpeed = 5.0f, hittingR = 10.0f;
 	public int Hp = 0, maxHp = 100, Shield = 0, maxShield = 100;
 	public string typeName;
 
@@ -44,6 +44,7 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 	float remainTime = 0f;
 
 //	private ViewRange vr;
+	private LaserShooter ls;
 
 	GUIStyle backColor;
 
@@ -58,6 +59,7 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 		targetPoint = transform.position;
 
 //		vr = (ViewRange)transform.FindChild ("viewRange").GetComponent (typeof(ViewRange));
+		ls = (LaserShooter)transform.FindChild ("LaserShooter").GetComponent (typeof(LaserShooter));
 		bullet1 = Resources.Load("projectile_001", typeof(GameObject)) as GameObject;
 		damageText = Resources.Load ("DamageNumber", typeof(GameObject)) as GameObject;
 		line = gameObject.AddComponent<LineRenderer> ();
@@ -117,6 +119,7 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 		if(attackPermission){
 			attackPermission = false;
 			attack1 (target);
+			attackLaser1(target);
 //			Invoke("attackPermissionTrue", attackSpeed);
 			remainTime = attackSpeed;
 //			Debug.Log(Time.time);
@@ -192,6 +195,10 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 		bc1.setTarget ("Enemy");
 	}
 
+	void attackLaser1(Vector3 target){
+		ls.laserCall (target);
+	}
+
 	void damageTextShow(int damage){
 		Vector3 pos = Camera.main.WorldToViewportPoint (transform.position);
 		GameObject text = Instantiate (damageText, pos, Quaternion.identity) as GameObject;
@@ -223,8 +230,8 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 	}
 
 	Vector3 hittingRatio(Vector3 point){
-		float number1 = Random.Range (-10f, 10f);
-		float number2 = Random.Range (-10f, 10f);
+		float number1 = Random.Range (-hittingR, hittingR);
+		float number2 = Random.Range (-hittingR, hittingR);
 
 		Vector3 result = new Vector3 (point.x + number1, point.y, point.z + number2);
 

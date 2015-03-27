@@ -5,7 +5,7 @@ public class EnemyControl : MonoBehaviour {
 
 	public int Hp, maxHp = 100, Shield, maxShield = 100;
 	public string typeName;
-	public float moveSpeed = 1.0f, attackSpeed = 5.0f;
+	public float moveSpeed = 1.0f, attackSpeed = 5.0f, hittingR = 10.0f;
 
 	bool attackPermission = true;
 	bool moveStop;
@@ -17,7 +17,7 @@ public class EnemyControl : MonoBehaviour {
 	private GameObject bullet1;
 	private GameObject damageText;
 
-	private Vector3 targetPoint;
+	public Vector3 targetPoint;
 
 	UnitControl[] units;
 
@@ -70,7 +70,7 @@ public class EnemyControl : MonoBehaviour {
 			callTemp = 0f;
 			units = us.getUnits();
 			targetPoint = calDistanceAll(units);
-			if(targetPoint.z != -9999){
+			if(targetPoint.y != -9999){
 				wayPointSet(targetPoint);
 			}
 		}
@@ -176,7 +176,7 @@ public class EnemyControl : MonoBehaviour {
 
 	Vector3 calDistanceAll(UnitControl[] units){
 		float lastDis = 1000f, temp;
-		Vector3 targetPosition = new Vector3(0, 0, -9999);
+		Vector3 targetPosition = new Vector3(0, -9999, 0);
 
 		foreach(UnitControl uc in units){
 			temp = calDistance(uc);
@@ -195,8 +195,8 @@ public class EnemyControl : MonoBehaviour {
 	}
 
 	Vector3 hittingRatio(Vector3 point){
-		float number1 = Random.Range (-10f, 10f);
-		float number2 = Random.Range (-10f, 10f);
+		float number1 = Random.Range (-hittingR, hittingR);
+		float number2 = Random.Range (-hittingR, hittingR);
 		
 		Vector3 result = new Vector3 (point.x + number1, point.y, point.z + number2);
 		

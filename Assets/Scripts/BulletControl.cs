@@ -12,7 +12,7 @@ public class BulletControl : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
+		Invoke ("dead", 6.0f);
 	}
 	
 	// Update is called once per frame
@@ -38,6 +38,10 @@ public class BulletControl : MonoBehaviour {
 //			other.gameObject.SendMessage ("applayDamage", damage);
 //			Object.Destroy(this.gameObject);
 //		}
+	}
+
+	void dead(){
+		Destroy (gameObject);
 	}
 
 	public void setDirection(Vector3 thisPosition, Vector3 targetPosition){
