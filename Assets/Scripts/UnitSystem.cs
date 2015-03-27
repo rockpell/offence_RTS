@@ -215,7 +215,7 @@ public class UnitSystem : MonoBehaviour {
 	}
 
 	void createPoints(LineRenderer line){
-		float x, y, z = 0f;
+		float x, y = 0f, z = 0f;
 		float angle = 20f;
 		
 		line.SetVertexCount (segments + 1);
@@ -225,7 +225,7 @@ public class UnitSystem : MonoBehaviour {
 		
 		for (int i = 0; i < (segments + 1); i++) {
 			x = Mathf.Sin(Mathf.Deg2Rad * angle) * radius;
-			y = Mathf.Cos(Mathf.Deg2Rad * angle) * radius;
+			z = Mathf.Cos(Mathf.Deg2Rad * angle) * radius;
 			
 			line.SetPosition(i, new Vector3(x, y, z));
 			

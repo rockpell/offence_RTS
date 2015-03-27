@@ -61,7 +61,7 @@ public class ViewRange : MonoBehaviour {
 	}
 
 	void createPoints(){
-		float x, y, z = 0f;
+		float x, y = 0f, z = 0f;
 		float angle = 20f;
 		
 		aline.SetVertexCount (segments + 1);
@@ -71,7 +71,7 @@ public class ViewRange : MonoBehaviour {
 		
 		for (int i = 0; i < (segments + 1); i++) {
 			x = Mathf.Sin(Mathf.Deg2Rad * angle) * radius;
-			y = Mathf.Cos(Mathf.Deg2Rad * angle) * radius;
+			z = Mathf.Cos(Mathf.Deg2Rad * angle) * radius;
 			
 			aline.SetPosition(i, new Vector3(x, y, z));
 			
@@ -81,22 +81,27 @@ public class ViewRange : MonoBehaviour {
 
 	void settingACircle(SphereCollider arangeC){
 		radius = arangeC.radius;
-		segments = 80;
 	}
 
 	void setAttackRange(SphereCollider arangeC, string tname){
 		if (tname == "tank") {
 			arangeC.radius = 5.8f;
+			segments = 100;
 		} else if (tname == "cube") {
 			arangeC.radius = 3.8f;
+			segments = 80;
 		} else if(tname == "sphere"){
 			arangeC.radius = 4.1f;
+			segments = 80;
 		} else if(tname == "cylinder"){
 			arangeC.radius = 4.5f;
+			segments = 85;
 		} else if(tname == "enemy_001"){
 			arangeC.radius = 4.0f;
+			segments = 80;
 		} else {
 			arangeC.radius = 3.0f;
+			segments = 60;
 		}
 	}
 
