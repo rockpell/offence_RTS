@@ -22,11 +22,11 @@ public class CameraControl : MonoBehaviour {
 		}
 		if(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)){
 //			transform.position += new Vector3(0, 0, movement);
-			transform.Translate((Vector3.up * movement) * Time.deltaTime * 100);
+			transform.Translate((Vector3.forward * movement) * Time.deltaTime * 100);
 		}
 		if(Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)){
 //			transform.position += new Vector3(0, 0, -movement);
-			transform.Translate((Vector3.down * movement) * Time.deltaTime * 100);
+			transform.Translate((Vector3.back * movement) * Time.deltaTime * 100);
 		}
 	}
 }
