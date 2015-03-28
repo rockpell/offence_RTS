@@ -166,8 +166,8 @@ public class EnemyControl : MonoBehaviour {
 
 	void unitSetting(){
 		if (typeName == "enemy_001") {
-			maxHp = 120;
-			maxShield = 100;
+			maxHp = 100;
+			maxShield = 130;
 		} else {
 			maxHp = 100;
 			maxShield = 100;

@@ -1,17 +1,16 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\LaserShooter.cs">
     <Files>
-      <File FileName="Assets\Scripts\ViewRange.cs" Line="48" Column="22" />
-      <File FileName="Assets\Scripts\UnitSystem.cs" Line="71" Column="3" />
-      <File FileName="Assets\Scripts\BulletControl.cs" Line="15" Column="23" />
-      <File FileName="Assets\Scripts\UnitControl.cs" Line="121" Column="21" />
-      <File FileName="Assets\Scripts\EnemyControl.cs" Line="52" Column="30" />
+      <File FileName="Assets\Scripts\ViewRange.cs" Line="86" Column="2" />
+      <File FileName="Assets\Scripts\UnitSystem.cs" Line="63" Column="9" />
+      <File FileName="Assets\Scripts\UnitControl.cs" Line="216" Column="19" />
+      <File FileName="Assets\Scripts\LaserShooter.cs" Line="51" Column="3" />
+      <File FileName="Assets\Scripts\EnemyControl.cs" Line="98" Column="26" />
+      <File FileName="Assets\Scripts\BulletControl.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\FPS.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\DamageNumbering.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\EnemySystem.cs" Line="23" Column="36" />
-      <File FileName="Assets\Scripts\CameraControl.cs" Line="29" Column="37" />
-      <File FileName="Assets\Scripts\LaserShooter.cs" Line="32" Column="39" />
+      <File FileName="Assets\SelectionBox\Code\UnityEngine.UI.Extensions NameSpace\IBoxSelectable.cs" Line="1" Column="1" />
+      <File FileName="Assets\SelectionBox\Code\UnityEngine.UI.Extensions NameSpace\SelectionBox.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

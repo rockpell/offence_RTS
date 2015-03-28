@@ -51,7 +51,7 @@ public class ViewRange : MonoBehaviour {
 
 		if (uc != null) {
 			if (other.tag == "Enemy") {
-				uc.attackRotation (other.gameObject.transform.position);
+				uc.attackRotation (other.gameObject.transform.position, "view");
 			}
 		}
 	}
@@ -85,22 +85,22 @@ public class ViewRange : MonoBehaviour {
 
 	void setAttackRange(SphereCollider arangeC, string tname){
 		if (tname == "tank") {
-			arangeC.radius = 7.0f;
+			arangeC.radius = 10.0f;
 			segments = 100;
 		} else if (tname == "cube") {
-			arangeC.radius = 4.2f;
+			arangeC.radius = 5.2f;
 			segments = 80;
 		} else if(tname == "sphere"){
-			arangeC.radius = 4.6f;
+			arangeC.radius = 5.6f;
 			segments = 80;
 		} else if(tname == "cylinder"){
-			arangeC.radius = 5.0f;
+			arangeC.radius = 6.0f;
 			segments = 85;
 		} else if(tname == "enemy_001"){
-			arangeC.radius = 4.2f;
+			arangeC.radius = 5.2f;
 			segments = 80;
 		} else {
-			arangeC.radius = 3.0f;
+			arangeC.radius = 5.0f;
 			segments = 60;
 		}
 	}

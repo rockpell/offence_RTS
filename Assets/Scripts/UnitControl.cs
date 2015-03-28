@@ -29,19 +29,19 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 	}
 	#endregion
 
-	public float moveSpeed = 1.0f, attackSpeed = 5.0f, hittingR = 10.0f;
+	public float moveSpeed = 1.0f, attackSpeed = 5.0f, attackSpeed2 = 8.0f, hittingR = 10.0f;
 	public int Hp = 0, maxHp = 100, Shield = 0, maxShield = 100;
 	public string typeName;
 
 	Vector3 targetPoint;
 //	Vector3 np;
 	
-	bool moveStop, attackPermission = true;
+	bool moveStop, attackPermission = true, attackPermission2 = true;
 
 	int segments;
 
 	float distCovered;
-	float remainTime = 0f;
+	float remainTime = 0f, remainTime2 = 0f;
 
 //	private ViewRange vr;
 	private LaserShooter ls;
@@ -102,6 +102,12 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 		} else if(remainTime <= 0){
 			attackPermissionTrue();
 		}
+
+		if(remainTime2 > 0){
+			remainTime2 -= Time.deltaTime;
+		} else if(remainTime <= 0){
+			attackPermissionTrue2();
+		}
 	}
 	
 	void OnCollisionEnter(Collision collision){
@@ -115,14 +121,21 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 //		Debug.Log ("target position : " + targetPoint);
 	}
 
-	public void attackRotation(Vector3 target){
-		if(attackPermission){
-			attackPermission = false;
-			attack1 (target);
-			attackLaser1(target);
-//			Invoke("attackPermissionTrue", attackSpeed);
-			remainTime = attackSpeed;
-//			Debug.Log(Time.time);
+	public void attackRotation(Vector3 target, string type){
+		if (type == "view") {
+			if (attackPermission) {
+				attackPermission = false;
+				attack1 (target);
+				//			Invoke("attackPermissionTrue", attackSpeed);
+				remainTime = attackSpeed;
+				//			Debug.Log(Time.time);
+			}
+		} else {
+			if(attackPermission2){
+				attackPermission2 = false;
+				attackLaser1(target);
+				remainTime2 = attackSpeed2;
+			}
 		}
 
 	}
@@ -186,6 +199,11 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 	void attackPermissionTrue(){
 		attackPermission = true;
 		remainTime = 0f;
+	}
+
+	void attackPermissionTrue2(){
+		attackPermission2 = true;
+		remainTime2 = 0f;
 	}
 
 	void attack1(Vector3 target){

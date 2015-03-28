@@ -53,16 +53,18 @@ public class UnitSystem : MonoBehaviour {
 //			Vector3 stwp = camera.ScreenToWorldPoint(pos);
 
 		Ray ray = camera.ScreenPointToRay (Input.mousePosition);
-		RaycastHit hit;
-
+		RaycastHit[] hit;
 
 		fObject ();
 
 		if (Input.GetMouseButtonDown (1)) {
 			foreach(UnitControl exs in ob){
 				if(exs.selected){
-					if(Physics.Raycast(ray, out hit)){
-						exs.wayPointSet(hit.point);
+					hit = Physics.RaycastAll(ray);
+					for(var i = 0; i< hit.Length; i++){
+						if(hit[i].collider.tag == "BackGround"){
+							exs.wayPointSet(hit[i].point);
+						}
 					}
 				}
 			}
