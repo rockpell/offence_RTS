@@ -54,6 +54,7 @@
      <Compile Include="Assets\Scripts\EnemyControl.cs" />
      <Compile Include="Assets\Scripts\EnemySystem.cs" />
      <Compile Include="Assets\Scripts\FPS.cs" />
+     <Compile Include="Assets\Scripts\LaserArange.cs" />
      <Compile Include="Assets\Scripts\LaserShooter.cs" />
      <Compile Include="Assets\Scripts\UnitControl.cs" />
      <Compile Include="Assets\Scripts\UnitSystem.cs" />

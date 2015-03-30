@@ -4,6 +4,7 @@ using System.Collections;
 public class CameraControl : MonoBehaviour {
 
 	public float movement = 2.0f;
+	public Camera camera;
 
 	// Use this for initialization
 	void Start () {

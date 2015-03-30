@@ -118,6 +118,14 @@ public class UnitSystem : MonoBehaviour {
 				nameHeight = 20;
 				HpWidth = 70;
 				HpHeight = 20;
+			} else if(typeName == "bomber"){
+				nameGap = 102;
+				hpGap = 88;
+				shieldGap = 68;
+				nameWidth = 50;
+				nameHeight = 20;
+				HpWidth = 70;
+				HpHeight = 20;
 			} else {
 				nameGap = 102;
 				hpGap = 88;
@@ -248,6 +256,9 @@ public class UnitSystem : MonoBehaviour {
 		} else if(typeName == "tank"){
 			segments = 40;
 			radius = 2.0f;
+		} else if(typeName == "bomber"){
+			segments = 45;
+			radius = 4.0f;
 		} else {
 			segments = 40;
 			radius = 2.0f;

@@ -1,69 +1,60 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ViewRange : MonoBehaviour {
+public class LaserArange : MonoBehaviour {
 
-	UnitControl uc;
-	EnemyControl ec;
-
+	SphereCollider sc;
 	LineRenderer aline;
+	LaserShooter ls;
+	UnitControl uc;
 
-	int segments;
 	float radius;
+	int segments;
 
 	// Use this for initialization
 	void Start () {
-		SphereCollider arangeC = gameObject.GetComponent<SphereCollider> ();
-
-//		uc = (UnitControl)transform.GetComponent (typeof(UnitControl));
-		uc = (UnitControl)transform.parent.GetComponent (typeof(UnitControl));
-		if(uc != null)
-			setAttackRange (arangeC, uc.getName());
-
-		if (uc == null) {
-			ec = (EnemyControl)transform.parent.GetComponent(typeof(EnemyControl));
-			setAttackRange (arangeC, ec.getName());
-		}
-
 		aline = gameObject.AddComponent<LineRenderer> ();
+		ls = transform.parent.GetComponent<LaserShooter>();
+		sc = transform.GetComponent<SphereCollider> ();
 
-		settingACircle (arangeC);
+		uc = (UnitControl)transform.parent.GetComponent (typeof(UnitControl));
+		
+		if(uc != null)
+			setAttackRange (sc, uc.getName());
+
+		settingCircle ();
 		createPoints ();
-
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (uc != null) {
-			if (uc.selected) {
-				aline.enabled = true;
-			} else {
-				aline.enabled = false;
-			}
+		if (uc.selected) {
+			aline.enabled = true;
+		} else {
+			aline.enabled = false;
 		}
 	}
 
 	void OnTriggerEnter(Collider other){
-
+		
 	}
-
+	
 	void OnTriggerStay(Collider other){
-//		Debug.Log ("collide object : "+other.name);
-		if (ec != null) {
-			if (other.tag == "Player") {
-				ec.attackRotation (other.gameObject.transform.position);
-			}
-		}
-
+		//		if (ec != null) {
+		//			if (other.tag == "Player") {
+		//				ec.attackRotation (other.gameObject.transform.position);
+		//			}
+		//		}
+		
 		if (uc != null) {
 			if (other.tag == "Enemy") {
-				uc.attackRotation (other.gameObject.transform.position, "view");
+				uc.attackRotation (other.gameObject.transform.position, "laser");
 			}
 		}
 	}
-
+	
 	void OnTriggerExit(Collider other){
-
+		
 	}
 
 	void createPoints(){
@@ -85,33 +76,35 @@ public class ViewRange : MonoBehaviour {
 		}
 	}
 
-	void settingACircle(SphereCollider arangeC){
-		radius = arangeC.radius;
-	}
-
 	void setAttackRange(SphereCollider arangeC, string tname){
 		if (tname == "tank") {
-			arangeC.radius = 10.0f;
-			segments = 100;
+			arangeC.radius = 30.0f;
 		} else if(tname == "bomber"){
-			arangeC.radius = 12.0f;
-			segments = 110;
+			arangeC.radius = 32.0f;
 		} else if (tname == "cube") {
-			arangeC.radius = 5.2f;
-			segments = 80;
+			arangeC.radius = 15.2f;
 		} else if(tname == "sphere"){
-			arangeC.radius = 5.6f;
-			segments = 80;
+			arangeC.radius = 17.6f;
 		} else if(tname == "cylinder"){
-			arangeC.radius = 6.0f;
-			segments = 85;
+			arangeC.radius = 22.0f;
 		} else if(tname == "enemy_001"){
-			arangeC.radius = 5.2f;
-			segments = 80;
+			arangeC.radius = 15.2f;
 		} else {
-			arangeC.radius = 5.0f;
-			segments = 60;
+			arangeC.radius = 15.0f;
 		}
 	}
 
+	void settingCircle(){
+		radius = sc.radius;
+
+		if (radius < 10.0f) {
+			segments = 60;
+		} else if (radius < 14.0f) {
+			segments = 80;
+		} else if (radius < 18.0f) {
+			segments = 100;
+		} else {
+			segments = 120;
+		}
+	}
 }

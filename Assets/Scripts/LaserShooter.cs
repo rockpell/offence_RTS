@@ -12,14 +12,15 @@ public class LaserShooter : MonoBehaviour {
 
 	bool attackPermition = false;
 
+	private GameObject testObject;
+
+//	SphereCollider arangeC;
+
 	// Use this for initialization
 	void Start () {
-		SphereCollider arangeC = gameObject.GetComponent<SphereCollider> ();
+//		arangeC = gameObject.GetComponent<SphereCollider> ();
 
 		uc = (UnitControl)transform.parent.GetComponent (typeof(UnitControl));
-
-		if(uc != null)
-			setAttackRange (arangeC, uc.getName());
 
 		lineSetting ();
 
@@ -47,27 +48,7 @@ public class LaserShooter : MonoBehaviour {
 
 	}
 
-	void OnTriggerEnter(Collider other){
-		
-	}
-	
-	void OnTriggerStay(Collider other){
-//		if (ec != null) {
-//			if (other.tag == "Player") {
-//				ec.attackRotation (other.gameObject.transform.position);
-//			}
-//		}
-		
-		if (uc != null) {
-			if (other.tag == "Enemy") {
-				uc.attackRotation (other.gameObject.transform.position, "laser");
-			}
-		}
-	}
-	
-	void OnTriggerExit(Collider other){
-		
-	}
+
 
 	public void laserCall(Vector3 target){
 		targetPosition = target;
@@ -97,19 +78,7 @@ public class LaserShooter : MonoBehaviour {
 //		attackPermition = false;
 	}
 
-	void setAttackRange(SphereCollider arangeC, string tname){
-		if (tname == "tank") {
-			arangeC.radius = 30.0f;
-		} else if (tname == "cube") {
-			arangeC.radius = 15.2f;
-		} else if(tname == "sphere"){
-			arangeC.radius = 17.6f;
-		} else if(tname == "cylinder"){
-			arangeC.radius = 22.0f;
-		} else if(tname == "enemy_001"){
-			arangeC.radius = 15.2f;
-		} else {
-			arangeC.radius = 15.0f;
-		}
-	}
+//	public SphereCollider getCollider(){
+//		return arangeC;
+//	}
 }

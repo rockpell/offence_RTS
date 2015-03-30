@@ -30,6 +30,7 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 	#endregion
 
 	public float moveSpeed = 1.0f, attackSpeed = 5.0f, attackSpeed2 = 8.0f, hittingR = 10.0f;
+	float MaxTurnSpeed = 40.0f;
 	public int Hp = 0, maxHp = 100, Shield = 0, maxShield = 100;
 	public string typeName;
 
@@ -37,6 +38,7 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 //	Vector3 np;
 	
 	bool moveStop, attackPermission = true, attackPermission2 = true;
+	bool waypointBool = false;
 
 	int segments;
 
@@ -51,6 +53,10 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 	private GameObject bullet1;
 	private GameObject damageText;
 
+	private Transform TankBody;
+
+//	NavMeshAgent agent;
+
 	LineRenderer line;
 
 	void Start () {
@@ -63,9 +69,14 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 		bullet1 = Resources.Load("projectile_001", typeof(GameObject)) as GameObject;
 		damageText = Resources.Load ("DamageNumber", typeof(GameObject)) as GameObject;
 		line = gameObject.AddComponent<LineRenderer> ();
+//		agent = GetComponent<NavMeshAgent> ();
 
 //		settingCircle ();
 //		createPoints ();
+		if(typeName == "tank")
+			TankBody = transform.FindChild ("TankMesh");
+		if(typeName == "bomber")
+			TankBody = transform.FindChild ("BomberMesh");
 
 		unitSetting ();
 
@@ -108,6 +119,11 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 		} else if(remainTime <= 0){
 			attackPermissionTrue2();
 		}
+
+		if(typeName == "tank" && waypointBool)
+			unitRotate (targetPoint);
+		if(typeName == "bomber" && waypointBool)
+			unitRotate (targetPoint);
 	}
 	
 	void OnCollisionEnter(Collision collision){
@@ -117,6 +133,8 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 	public void wayPointSet(Vector3 pos){
 		targetPoint = pos;
 		targetPoint.y = 50;
+		waypointBool = true;
+//		agent.destination = targetPoint;
 //		np = Vector3.Normalize(targetPoint - transform.position);
 //		Debug.Log ("target position : " + targetPoint);
 	}
@@ -240,6 +258,10 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 			maxHp = 200;
 			maxShield = 300;
 			moveSpeed = 0.8f;
+		} else if(typeName == "bomber"){
+			maxHp = 220;
+			maxShield = 310;
+			moveSpeed = 1.5f;
 		} else {
 			maxHp = 100;
 			maxShield = 100;
@@ -254,5 +276,12 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 		Vector3 result = new Vector3 (point.x + number1, point.y, point.z + number2);
 
 		return result;
+	}
+
+	void unitRotate(Vector3 target){
+		Vector3 relativePos = target - transform.position;
+		Quaternion rotation = Quaternion.LookRotation(relativePos);
+//		TankBody.rotation = rotation;
+		TankBody.rotation =  Quaternion.RotateTowards(TankBody.rotation, rotation, MaxTurnSpeed * Time.deltaTime);
 	}
 }
