@@ -1,9 +1,9 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\UnitControl.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\EnemyControl.cs">
     <Files>
-      <File FileName="..\New Unity Project\Assets\scenes\tutorial_resources\playerMovement.cs" Line="9" Column="8" />
-      <File FileName="Assets\Scripts\UnitControl.cs" Line="58" Column="23" />
+      <File FileName="Assets\Scripts\UnitControl.cs" Line="139" Column="23" />
+      <File FileName="Assets\Scripts\EnemyControl.cs" Line="99" Column="36" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

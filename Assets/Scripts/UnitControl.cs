@@ -30,7 +30,7 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 	#endregion
 
 	public float moveSpeed = 1.0f, attackSpeed = 5.0f, attackSpeed2 = 8.0f, hittingR = 10.0f;
-	float MaxTurnSpeed = 40.0f;
+//	float MaxTurnSpeed = 40.0f;
 	public int Hp = 0, maxHp = 100, Shield = 0, maxShield = 100;
 	public string typeName;
 
@@ -55,7 +55,7 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 
 	private Transform TankBody;
 
-//	NavMeshAgent agent;
+	NavMeshAgent agent;
 
 	LineRenderer line;
 
@@ -69,7 +69,7 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 		bullet1 = Resources.Load("projectile_001", typeof(GameObject)) as GameObject;
 		damageText = Resources.Load ("DamageNumber", typeof(GameObject)) as GameObject;
 		line = gameObject.AddComponent<LineRenderer> ();
-//		agent = GetComponent<NavMeshAgent> ();
+		agent = GetComponent<NavMeshAgent> ();
 
 //		settingCircle ();
 //		createPoints ();
@@ -100,11 +100,11 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 			moveStop = true;
 		}
 
-		if(moveStop){
-			distCovered = moveSpeed * Time.deltaTime*10;
-			transform.position = Vector3.MoveTowards(transform.position, targetPoint, distCovered);
-//			rigidbody.MovePosition(transform.position + np * distCovered);
-		}
+//		if(moveStop){
+//			distCovered = moveSpeed * Time.deltaTime*10;
+//			transform.position = Vector3.MoveTowards(transform.position, targetPoint, distCovered);
+////			rigidbody.MovePosition(transform.position + np * distCovered);
+//		}
 
 		uintDead ();
 
@@ -120,10 +120,12 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 			attackPermissionTrue2();
 		}
 
-		if(typeName == "tank" && waypointBool)
-			unitRotate (targetPoint);
-		if(typeName == "bomber" && waypointBool)
-			unitRotate (targetPoint);
+//		if(typeName == "tank" && waypointBool)
+//			unitRotate (targetPoint);
+//		if(typeName == "bomber" && waypointBool)
+//			unitRotate (targetPoint);
+
+//		agent.SetDestination (targetPoint);
 	}
 	
 	void OnCollisionEnter(Collision collision){
@@ -132,9 +134,11 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 
 	public void wayPointSet(Vector3 pos){
 		targetPoint = pos;
-		targetPoint.y = 50;
+		targetPoint.y = 0;
 		waypointBool = true;
+		agent.SetDestination (targetPoint);
 //		agent.destination = targetPoint;
+
 //		np = Vector3.Normalize(targetPoint - transform.position);
 //		Debug.Log ("target position : " + targetPoint);
 	}
@@ -278,10 +282,10 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 		return result;
 	}
 
-	void unitRotate(Vector3 target){
-		Vector3 relativePos = target - transform.position;
-		Quaternion rotation = Quaternion.LookRotation(relativePos);
-//		TankBody.rotation = rotation;
-		TankBody.rotation =  Quaternion.RotateTowards(TankBody.rotation, rotation, MaxTurnSpeed * Time.deltaTime);
-	}
+//	void unitRotate(Vector3 target){
+//		Vector3 relativePos = target - transform.position;
+//		Quaternion rotation = Quaternion.LookRotation(relativePos);
+////		TankBody.rotation = rotation;
+//		TankBody.rotation =  Quaternion.RotateTowards(TankBody.rotation, rotation, MaxTurnSpeed * Time.deltaTime);
+//	}
 }

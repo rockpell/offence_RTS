@@ -19,6 +19,8 @@ public class EnemyControl : MonoBehaviour {
 
 	public Vector3 targetPoint;
 
+	NavMeshAgent agent;
+
 	UnitControl[] units;
 
 	UnitSystem us;
@@ -32,6 +34,7 @@ public class EnemyControl : MonoBehaviour {
 		line = gameObject.AddComponent<LineRenderer> ();
 		bullet1 = Resources.Load("projectile_001", typeof(GameObject)) as GameObject;
 		damageText = Resources.Load ("DamageNumber", typeof(GameObject)) as GameObject;
+		agent = GetComponent<NavMeshAgent> ();
 
 		unitSetting ();
 
@@ -59,10 +62,10 @@ public class EnemyControl : MonoBehaviour {
 			moveStop = true;
 		}
 		
-		if(moveStop){
-			distCovered = moveSpeed * Time.deltaTime * 10;
-			transform.position = Vector3.MoveTowards(transform.position, targetPoint, distCovered);
-		}
+//		if(moveStop){
+//			distCovered = moveSpeed * Time.deltaTime * 10;
+//			transform.position = Vector3.MoveTowards(transform.position, targetPoint, distCovered);
+//		}
 
 		callTemp += Time.deltaTime;
 
@@ -92,7 +95,8 @@ public class EnemyControl : MonoBehaviour {
 
 	public void wayPointSet(Vector3 pos){
 		targetPoint = pos;
-		targetPoint.y = 50;
+		targetPoint.y = 0;
+		agent.SetDestination (targetPoint);
 	}
 
 	public void applayDamage(int damage){
