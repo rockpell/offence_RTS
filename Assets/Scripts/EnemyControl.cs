@@ -7,15 +7,23 @@ public class EnemyControl : MonoBehaviour {
 	public string typeName;
 	public float moveSpeed = 1.0f, attackSpeed = 5.0f, hittingR = 10.0f;
 
+	public Transform probePoint; // forward probe point
+	public Transform leftR; // left probe point
+	public Transform rightR; // right probe point
+
 	bool attackPermission = true;
 	bool moveStop;
+	bool obstacleAvoid  = false;
 
 	float remainTime = 0f, distCovered, callTemp = 0f;
+	float probeRange = 60.0f;
 
 	LineRenderer line;
 
 	private GameObject bullet1;
 	private GameObject damageText;
+
+	private Transform obstacleInPath;
 
 	public Vector3 targetPoint;
 
@@ -38,6 +46,13 @@ public class EnemyControl : MonoBehaviour {
 
 		unitSetting ();
 
+		if(probePoint == null)
+			probePoint = transform;
+		if(leftR == null)
+			leftR = transform;         
+		if(rightR == null)
+			rightR = transform;
+
 		if(Hp == 0)
 			Hp = maxHp;
 		if (Shield == 0)
@@ -49,6 +64,93 @@ public class EnemyControl : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 		unitDead ();
+
+		RaycastHit hit;
+		RaycastHit[] hits;
+		Vector3 dir = (targetPoint - transform.position).normalized;
+		bool previousCastMissed = true;
+		
+		Debug.DrawRay(probePoint.position, transform.forward*100, Color.red, 0.2f, true);
+		hits = Physics.RaycastAll (probePoint.position, transform.forward, probeRange);
+		
+		foreach(var hi in hits){
+			//			Debug.Log(typeName+" <- my name   found : "+ hi.transform.name);
+			if(hi.transform.tag == "Object"){
+				if(obstacleInPath == null || obstacleInPath.position != targetPoint){
+					Debug.DrawLine(transform.position, hi.point, Color.green);
+					previousCastMissed = false;
+					obstacleAvoid = true;
+					agent.Stop(true);
+					agent.ResetPath();
+					if(hi.transform != transform){
+						obstacleInPath = hi.transform;
+						dir += hi.normal * agent.angularSpeed;
+					}
+				}
+			}
+		}
+		
+		//		if(Physics.Raycast(probePoint.position, transform.forward, out hit, probeRange)){
+		//			Debug.Log("found : "+ hit.transform.name);
+		//			if(obstacleInPath == null || obstacleInPath.position != targetPoint){
+		//				Debug.DrawLine(transform.position, hit.point, Color.green);
+		//				previousCastMissed = false;
+		//				obstacleAvoid = true;
+		//				agent.Stop(true);
+		//				agent.ResetPath();
+		//				if(hit.transform != transform){
+		//					obstacleInPath = hit.transform;
+		//					dir += hit.normal * agent.angularSpeed;
+		//				}
+		//			}
+		//		}
+		
+		if(obstacleAvoid  && previousCastMissed && Physics.Raycast(leftR.position, transform.forward, out hit, probeRange)) {
+			if(obstacleInPath == null || obstacleInPath.position != targetPoint) { // ignore our target
+				Debug.DrawLine(leftR.position, hit.point, Color.red);
+				obstacleAvoid = true;
+				agent.Stop();
+				if(hit.transform != transform) {
+					obstacleInPath = hit.transform;
+					previousCastMissed = false;
+					Debug.Log("moving around an object");
+					dir += hit.normal * agent.angularSpeed;
+				}
+			}
+		}
+		
+		if(obstacleAvoid && previousCastMissed && Physics.Raycast(rightR.position, transform.forward, out hit, probeRange)) {
+			if(obstacleInPath.position != targetPoint) { // ignore our target
+				Debug.DrawLine(rightR.position, hit.point, Color.green);
+				obstacleAvoid = true;
+				agent.Stop();
+				if(hit.transform != transform) {
+					obstacleInPath = hit.transform;
+					Debug.Log("moving around an object2");
+					dir += hit.normal * agent.angularSpeed;
+				}
+			}
+		}
+		
+		if(obstacleInPath != null){
+			Vector3 forward = transform.TransformDirection(Vector3.forward);
+			Vector3 toOther = obstacleInPath.position - transform.position;
+			if(Vector3.Dot(forward, toOther) < 0){
+				obstacleAvoid = false;
+				obstacleInPath = null;
+				agent.ResetPath();
+				agent.SetDestination(targetPoint);
+				agent.Resume();
+				Debug.Log("dot");
+			}
+		}
+		
+		if(obstacleAvoid){
+			Quaternion rot = Quaternion.LookRotation(dir);
+			transform.rotation = Quaternion.Slerp(transform.rotation, rot, Time.deltaTime);
+			transform.position += transform.forward * agent.speed * Time.deltaTime;
+			Debug.Log("rotating");
+		}
 
 		if (remainTime > 0) {
 			remainTime -= Time.deltaTime;
