@@ -11,6 +11,8 @@ public class EnemyControl : MonoBehaviour {
 	public Transform leftR; // left probe point
 	public Transform rightR; // right probe point
 
+	public Mesh meshToCollide1;
+
 	bool attackPermission = true;
 	bool moveStop;
 	bool obstacleAvoid  = false;
@@ -59,6 +61,9 @@ public class EnemyControl : MonoBehaviour {
 			Shield = maxShield;
 
 		us = UnitSystem.instance;
+
+		if(meshToCollide1 != null)
+			settingCollider ();
 	}
 	
 	// Update is called once per frame
@@ -141,7 +146,6 @@ public class EnemyControl : MonoBehaviour {
 				agent.ResetPath();
 				agent.SetDestination(targetPoint);
 				agent.Resume();
-				Debug.Log("dot");
 			}
 		}
 		
@@ -149,7 +153,6 @@ public class EnemyControl : MonoBehaviour {
 			Quaternion rot = Quaternion.LookRotation(dir);
 			transform.rotation = Quaternion.Slerp(transform.rotation, rot, Time.deltaTime);
 			transform.position += transform.forward * agent.speed * Time.deltaTime;
-			Debug.Log("rotating");
 		}
 
 		if (remainTime > 0) {
@@ -157,17 +160,6 @@ public class EnemyControl : MonoBehaviour {
 		} else if(remainTime <= 0){
 			attackPermissionTrue();
 		}
-
-		if (Vector3.Distance (transform.position, targetPoint) < 0.1f) {
-			moveStop = false;
-		} else {
-			moveStop = true;
-		}
-		
-//		if(moveStop){
-//			distCovered = moveSpeed * Time.deltaTime * 10;
-//			transform.position = Vector3.MoveTowards(transform.position, targetPoint, distCovered);
-//		}
 
 		callTemp += Time.deltaTime;
 
@@ -309,4 +301,9 @@ public class EnemyControl : MonoBehaviour {
 		return result;
 	}
 
+	void settingCollider(){
+		MeshCollider mc1 = transform.gameObject.AddComponent<MeshCollider>();
+
+		mc1.sharedMesh = meshToCollide1;
+	}
 }

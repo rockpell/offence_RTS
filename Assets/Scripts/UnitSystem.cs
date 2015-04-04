@@ -35,7 +35,7 @@ public class UnitSystem : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 //			sb = SelectionBox.instance;
-		background.renderer.material.color = new Color (0, 0, 0, 0.5f);
+		background.renderer.material.color = new Color (0, 0, 0, 0);
 
 	}
 
