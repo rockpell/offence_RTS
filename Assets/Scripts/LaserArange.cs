@@ -8,6 +8,8 @@ public class LaserArange : MonoBehaviour {
 	LaserShooter ls;
 	UnitControl uc;
 
+	ArrayList colList;
+
 	float radius;
 	int segments;
 
@@ -24,6 +26,8 @@ public class LaserArange : MonoBehaviour {
 
 		settingCircle ();
 		createPoints ();
+
+		colList = new ArrayList ();
 	}
 	
 	// Update is called once per frame
@@ -36,7 +40,9 @@ public class LaserArange : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider other){
-		
+		if (other.tag == "Enemy") {
+			colList.Add (other.gameObject);
+		}
 	}
 	
 	void OnTriggerStay(Collider other){
@@ -47,7 +53,7 @@ public class LaserArange : MonoBehaviour {
 		//		}
 		
 		if (uc != null) {
-			if (other.tag == "Enemy") {
+			if (other.tag == "Enemy" && other.gameObject.Equals(colList[0])) {
 				Vector3 tv = other.gameObject.transform.position;
 				
 				if(other.transform.name == "enemy_1"){
@@ -59,7 +65,9 @@ public class LaserArange : MonoBehaviour {
 	}
 	
 	void OnTriggerExit(Collider other){
-		
+		if (other.tag == "Enemy") {
+			colList.Remove (other.gameObject);
+		}
 	}
 
 	void createPoints(){

@@ -97,34 +97,18 @@ public class UnitSystem : MonoBehaviour {
 			target = Camera.main.WorldToScreenPoint (target);
 			target.y = Screen.height - target.y;
 			
-			if (typeName == "cube") {
-				nameGap = 66;
-				hpGap = 52;
-				shieldGap = 32;
-				nameWidth = 50;
-				nameHeight = 20;
-				HpWidth = 70;
-				HpHeight = 20;
-			} else if (typeName == "cylinder") {
-				nameGap = 79;
-				hpGap = 65;
-				shieldGap = 45;
-				nameWidth = 50;
-				nameHeight = 20;
-				HpWidth = 70;
-				HpHeight = 20;
-			} else if (typeName == "sphere") {
-				nameGap = 65;
-				hpGap = 51;
-				shieldGap = 31;
+			if (typeName == "tank"){
+				nameGap = 82;
+				hpGap = 68;
+				shieldGap = 48;
 				nameWidth = 50;
 				nameHeight = 20;
 				HpWidth = 70;
 				HpHeight = 20;
 			} else if(typeName == "bomber"){
-				nameGap = 102;
-				hpGap = 88;
-				shieldGap = 68;
+				nameGap = 92;
+				hpGap = 78;
+				shieldGap = 58;
 				nameWidth = 50;
 				nameHeight = 20;
 				HpWidth = 70;
@@ -172,9 +156,9 @@ public class UnitSystem : MonoBehaviour {
 				target.y = Screen.height - target.y;
 
 				if (typeName == "enemy_1") {
-					nameGap = 86;
-					hpGap = 72;
-					shieldGap = 52;
+					nameGap = 76;
+					hpGap = 62;
+					shieldGap = 42;
 					nameWidth = 72;
 					nameHeight = 20;
 					HpWidth = 70;
@@ -290,8 +274,8 @@ public class UnitSystem : MonoBehaviour {
 				sizeRate += 0.02f;
 				Debug.Log("up : "+sizeRate);
 			}
-			if(fontSizeContorl < 14){
-				if(0.79f < sizeRate  && sizeRate < 0.81f){
+			if(fontSizeContorl <= 0){
+				if(0.89f < sizeRate  && sizeRate < 0.91f){
 					fontSizeContorl += 1;
 					Debug.Log("font up");
 				}
@@ -301,8 +285,8 @@ public class UnitSystem : MonoBehaviour {
 				sizeRate -= 0.02f;
 				Debug.Log("down : "+sizeRate);
 			}
-			if(fontSizeContorl > 12){
-				if(0.79f < sizeRate  && sizeRate < 0.81f){
+			if(fontSizeContorl >= 0){
+				if(0.89f < sizeRate  && sizeRate < 0.91f){
 					fontSizeContorl -= 1;
 					Debug.Log("font down");
 				}

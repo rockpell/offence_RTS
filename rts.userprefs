@@ -1,12 +1,10 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\UnitControl.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\LaserArange.cs">
     <Files>
-      <File FileName="Assets\Scripts\UnitControl.cs" Line="205" Column="23" />
-      <File FileName="Assets\Scripts\EnemyControl.cs" Line="89" Column="24" />
-      <File FileName="Assets\Scripts\UnitSystem.cs" Line="205" Column="14" />
-      <File FileName="Assets\Scripts\CameraControl.cs" Line="37" Column="22" />
-      <File FileName="Assets\SelectionBox\Code\UnityEngine.UI.Extensions NameSpace\SelectionBox.cs" Line="92" Column="4" />
+      <File FileName="Assets\Scripts\UnitControl.cs" Line="361" Column="35" />
+      <File FileName="Assets\Scripts\ViewRange.cs" Line="92" Column="27" />
+      <File FileName="Assets\Scripts\LaserArange.cs" Line="44" Column="35" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

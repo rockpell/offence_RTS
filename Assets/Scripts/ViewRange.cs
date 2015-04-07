@@ -8,6 +8,8 @@ public class ViewRange : MonoBehaviour {
 
 	LineRenderer aline;
 
+	ArrayList colList;
+
 	int segments;
 	float radius;
 
@@ -30,6 +32,7 @@ public class ViewRange : MonoBehaviour {
 		settingACircle (arangeC);
 		createPoints ();
 
+		colList = new ArrayList ();
 	}
 	
 	// Update is called once per frame
@@ -44,19 +47,26 @@ public class ViewRange : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider other){
-
+		if (uc != null) {
+			if (other.tag == "Enemy")
+				colList.Add (other.gameObject);
+		} else {
+			if(other.tag == "Player")
+				colList.Add(other.gameObject);
+		}
 	}
 
 	void OnTriggerStay(Collider other){
 //		Debug.Log ("collide object : "+other.name);
 		if (ec != null) {
 			if (other.tag == "Player") {
+
 				ec.attackRotation (other.gameObject.transform.position);
 			}
 		}
 
 		if (uc != null) {
-			if (other.tag == "Enemy") {
+			if (other.tag == "Enemy" && other.gameObject.Equals(colList[0])) {
 				Vector3 tv = other.gameObject.transform.position;
 
 				if(other.transform.name == "enemy_1"){
@@ -69,7 +79,13 @@ public class ViewRange : MonoBehaviour {
 	}
 
 	void OnTriggerExit(Collider other){
-
+		if (uc != null) {
+			if (other.tag == "Enemy")
+				colList.Remove (other.gameObject);
+		} else {
+			if(other.tag == "Player")
+				colList.Remove(other.gameObject);
+		}
 	}
 
 	void createPoints(){
