@@ -236,7 +236,7 @@ namespace UnityEngine.UI.Extensions {
 				
 				//First we check to see if the selectable has a rectTransform
 				var rectTransform = (selectable.transform as RectTransform);
-				
+
 				if (rectTransform) {
 					//Because if it does, the camera we use to calulate it's screen point will vary
 					var screenCamera = GetScreenPointCamera(rectTransform);
@@ -252,7 +252,7 @@ namespace UnityEngine.UI.Extensions {
 					//If it doesn't have a rectTransform, we need to get the radius so we can use it as an area around the center to detect a click.
 					//This works because a 2D or 3D renderer will both return a radius
 					var radius = selectable.transform.renderer.bounds.extents.magnitude;
-					
+					radius -=  radius*5/8;
 					var selectableScreenPoint = GetScreenPointOfSelectable(selectable);
 					
 					//Check that the click fits within the screen-radius of the selectable

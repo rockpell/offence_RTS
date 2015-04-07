@@ -39,11 +39,13 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 	public Transform leftR; // left probe point
 	public Transform rightR; // right probe point
 
+	public Transform leftArm;
+	public Transform rightArm;
+
 	public Mesh meshToCollide1, meshToCollide2, meshToCollide3;
 
 	Vector3 targetPoint;
-//	Vector3 np;
-	
+
 	bool attackPermission = true, attackPermission2 = true;
 	bool waypointBool = false;
 	bool obstacleAvoid  = false;
@@ -53,6 +55,8 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 	float distCovered;
 	float remainTime = 0f, remainTime2 = 0f;
 
+	string nextAttack;
+
 //	private ViewRange vr;
 	private LaserShooter ls;
 
@@ -60,6 +64,7 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 
 	private GameObject bullet1;
 	private GameObject damageText;
+	private GameObject waypointObject, wp;
 
 	private Transform TankBody;
 	private Transform obstacleInPath;
@@ -72,15 +77,23 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 
 		targetPoint = transform.position;
 
-//		vr = (ViewRange)transform.FindChild ("viewRange").GetComponent (typeof(ViewRange));
-		ls = (LaserShooter)transform.FindChild ("LaserShooter").GetComponent (typeof(LaserShooter));
-		bullet1 = Resources.Load("projectile_001", typeof(GameObject)) as GameObject;
+		if (typeName == "tank") {
+			bullet1 = Resources.Load ("projectile_001", typeof(GameObject)) as GameObject;
+		} else {
+			bullet1 = Resources.Load ("projectile_001", typeof(GameObject)) as GameObject;
+			ls = (LaserShooter)transform.FindChild ("LaserShooter").GetComponent (typeof(LaserShooter));
+		}
+
 		damageText = Resources.Load ("DamageNumber", typeof(GameObject)) as GameObject;
+		waypointObject = Resources.Load ("waypointObject", typeof(GameObject)) as GameObject;
 		line = gameObject.AddComponent<LineRenderer> ();
 		agent = GetComponent<NavMeshAgent> ();
 
 //		settingCircle ();
 //		createPoints ();
+
+		wp = Instantiate (waypointObject, targetPoint, Quaternion.identity) as GameObject;
+
 		if(typeName == "tank")
 			TankBody = transform.FindChild ("TankMesh");
 		if(typeName == "bomber")
@@ -193,8 +206,10 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 
 		if (selected) {
 			line.enabled = true;
+			wp.SetActive(true);
 		} else {
 			line.enabled = false;
+			wp.SetActive(false);
 		}
 
 //		if(moveStop){
@@ -229,11 +244,18 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 
 	}
 
+	void waypointObjectSet(){
+		Vector3 temp = targetPoint;
+		temp.y = 20;
+		wp.transform.position = temp;
+	}
+
 	public void wayPointSet(Vector3 pos){
 		targetPoint = pos;
 		targetPoint.y = 0;
 		waypointBool = true;
 		agent.SetDestination (targetPoint);
+		waypointObjectSet ();
 //		agent.destination = targetPoint;
 
 //		np = Vector3.Normalize(targetPoint - transform.position);
@@ -271,7 +293,6 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 		}
 
 		damageTextShow (damage);
-		Debug.Log (typeName+" damaged");
 	}
 
 	public float getAttackSpeed(){
@@ -326,15 +347,34 @@ public class UnitControl : MonoBehaviour, IBoxSelectable {
 		remainTime2 = 0f;
 	}
 
+	Vector3 attackProcedure(){
+		Vector3 result = new Vector3(0, 0, 0);
+
+		if(typeName == "tank"){
+			if(nextAttack == "left"){
+				result = leftArm.position;
+				nextAttack = "right";
+			} else {
+				result = rightArm.position;
+				nextAttack = "left";
+			}
+		} else if(typeName == "bomber"){
+			result = leftArm.position;
+		}
+
+		return result;
+	}
+
 	void attack1(Vector3 target){
-		GameObject abc = Instantiate (bullet1, transform.position, Quaternion.identity) as GameObject;
+		Vector3 shootingPosition = attackProcedure();
+		GameObject abc = Instantiate (bullet1, shootingPosition, Quaternion.identity) as GameObject;
 		BulletControl bc1 = abc.GetComponent (typeof(BulletControl)) as BulletControl;
-		bc1.setDirection (transform.position, hittingRatio(target));
+		bc1.setDirection (shootingPosition, hittingRatio(target));
 		bc1.setTarget ("Enemy");
 	}
 
 	void attackLaser1(Vector3 target){
-		ls.laserCall (target);
+		ls.laserCall (rightArm.position, target);
 	}
 
 	void damageTextShow(int damage){

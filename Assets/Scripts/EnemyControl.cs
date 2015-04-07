@@ -11,7 +11,7 @@ public class EnemyControl : MonoBehaviour {
 	public Transform leftR; // left probe point
 	public Transform rightR; // right probe point
 
-	public Mesh meshToCollide1;
+	public Mesh meshToCollide1, meshToCollide2, meshToCollide3;
 
 	bool attackPermission = true;
 	bool moveStop;
@@ -27,7 +27,7 @@ public class EnemyControl : MonoBehaviour {
 
 	private Transform obstacleInPath;
 
-	public Vector3 targetPoint;
+	private Vector3 targetPoint;
 
 	NavMeshAgent agent;
 
@@ -118,7 +118,7 @@ public class EnemyControl : MonoBehaviour {
 				if(hit.transform != transform) {
 					obstacleInPath = hit.transform;
 					previousCastMissed = false;
-					Debug.Log("moving around an object");
+//					Debug.Log("moving around an object");
 					dir += hit.normal * agent.angularSpeed;
 				}
 			}
@@ -131,7 +131,7 @@ public class EnemyControl : MonoBehaviour {
 				agent.Stop();
 				if(hit.transform != transform) {
 					obstacleInPath = hit.transform;
-					Debug.Log("moving around an object2");
+//					Debug.Log("moving around an object2");
 					dir += hit.normal * agent.angularSpeed;
 				}
 			}
@@ -205,6 +205,7 @@ public class EnemyControl : MonoBehaviour {
 		}
 		
 		damageTextShow (damage);
+//		Debug.Log ("enemy damaged");
 	}
 
 	public float getAttackSpeed(){
@@ -263,9 +264,12 @@ public class EnemyControl : MonoBehaviour {
 	}
 
 	void unitSetting(){
-		if (typeName == "enemy_001") {
+		if (typeName == "enemy_1") {
+			maxHp = 300;
+			maxShield = 350;
+		} else if (typeName == "enemy_2") {
 			maxHp = 100;
-			maxShield = 130;
+			maxShield = 150;
 		} else {
 			maxHp = 100;
 			maxShield = 100;
@@ -305,5 +309,17 @@ public class EnemyControl : MonoBehaviour {
 		MeshCollider mc1 = transform.gameObject.AddComponent<MeshCollider>();
 
 		mc1.sharedMesh = meshToCollide1;
+
+		if (meshToCollide2 != null) {
+			MeshCollider mc2 = transform.gameObject.AddComponent<MeshCollider>();
+			
+			mc2.sharedMesh = meshToCollide2;
+		}
+
+		if (meshToCollide3 != null) {
+			MeshCollider mc3 = transform.gameObject.AddComponent<MeshCollider>();
+			
+			mc3.sharedMesh = meshToCollide3;
+		}
 	}
 }

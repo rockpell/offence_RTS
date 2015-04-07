@@ -10,6 +10,8 @@ public class BulletControl : MonoBehaviour {
 
 	string targetName;
 
+	bool damageDuple = false;
+
 	// Use this for initialization
 	void Start () {
 		Invoke ("dead", 6.0f);
@@ -30,8 +32,11 @@ public class BulletControl : MonoBehaviour {
 //		}
 
 		if (other.tag == targetName) {
-			other.gameObject.SendMessage ("applayDamage", damage);
-			Object.Destroy(this.gameObject);
+			if(!damageDuple){
+				other.gameObject.SendMessage ("applayDamage", damage);
+				damageDuple = true;
+				Object.Destroy(this.gameObject);
+			}
 		}
 
 //		if(other.tag == "Player"){

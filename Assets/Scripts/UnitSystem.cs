@@ -30,7 +30,9 @@ public class UnitSystem : MonoBehaviour {
 	EnemyControl[] ec;
 
 	int segments;
+	int fontSizeContorl;
 	float radius;
+	float sizeRate = 1.0f;
 
 	// Use this for initialization
 	void Start () {
@@ -80,6 +82,7 @@ public class UnitSystem : MonoBehaviour {
 		
 		GUIStyle allingCenter = GUI.skin.GetStyle ("Label");
 		allingCenter.alignment = TextAnchor.UpperCenter;
+		allingCenter.fontSize = 13 + fontSizeContorl;
 
 		foreach (UnitControl ogui in ob) {
 			string typeName = ogui.getName();
@@ -137,15 +140,15 @@ public class UnitSystem : MonoBehaviour {
 				
 			}
 			
-			GUI.Label (new Rect(target.x - nameWidth/2, target.y - nameGap, nameWidth, nameHeight), typeName, allingCenter);
-			GUI.Label (new Rect(target.x - HpWidth/2, target.y - hpGap, HpWidth, HpHeight), Hp+" / "+maxHp, allingCenter);
-			GUI.Label (new Rect(target.x - HpWidth/2, target.y - shieldGap, HpWidth, HpHeight), Shield + " / " + maxShield, allingCenter);
+			GUI.Label (new Rect(target.x - nameWidth/2, target.y - nameGap, nameWidth * sizeRate, nameHeight * sizeRate), typeName, allingCenter);
+			GUI.Label (new Rect(target.x - HpWidth/2, target.y - hpGap, HpWidth * sizeRate, HpHeight * sizeRate), Hp+" / "+maxHp, allingCenter);
+			GUI.Label (new Rect(target.x - HpWidth/2, target.y - shieldGap, HpWidth * sizeRate, HpHeight * sizeRate), Shield + " / " + maxShield, allingCenter);
 
 			
 			barBox ();
 			
-			GUI.Box (new Rect(target.x - HpWidth/2, target.y - hpGap + 5, HpBarWidth * (Hp / maxHp), 14), "", backColor);
-			GUI.Box (new Rect(target.x - HpWidth/2, target.y - shieldGap + 3, HpBarWidth * (Shield / maxShield), 14), "", ShiledBackColor);
+			GUI.Box (new Rect(target.x - HpWidth/2, target.y - hpGap + 5, HpBarWidth * (Hp / maxHp) * sizeRate, 14 * sizeRate), "", backColor);
+			GUI.Box (new Rect(target.x - HpWidth/2, target.y - shieldGap + 3, HpBarWidth * (Shield / maxShield * sizeRate), 14 * sizeRate), "", ShiledBackColor);
 
 			if(remainTime != 0)
 				GUI.Box(new Rect(target.x - 35, target.y + 25, 5 + 50 * (remainTime / speedTime), 8), "", backColor);
@@ -168,11 +171,19 @@ public class UnitSystem : MonoBehaviour {
 				target = Camera.main.WorldToScreenPoint (target);
 				target.y = Screen.height - target.y;
 
-				if (typeName == "enemy_001") {
-					nameGap = 66;
-					hpGap = 52;
-					shieldGap = 32;
-					nameWidth = 68;
+				if (typeName == "enemy_1") {
+					nameGap = 86;
+					hpGap = 72;
+					shieldGap = 52;
+					nameWidth = 72;
+					nameHeight = 20;
+					HpWidth = 70;
+					HpHeight = 20;
+				} else if (typeName == "enemy_2") {
+					nameGap = 76;
+					hpGap = 62;
+					shieldGap = 42;
+					nameWidth = 72;
 					nameHeight = 20;
 					HpWidth = 70;
 					HpHeight = 20;
@@ -186,12 +197,12 @@ public class UnitSystem : MonoBehaviour {
 					HpHeight = 20;
 				}
 
-				GUI.Label (new Rect (target.x - nameWidth / 2, target.y - nameGap, nameWidth, nameHeight), typeName, allingCenter);
-				GUI.Label (new Rect (target.x - HpWidth / 2, target.y - hpGap, HpWidth, HpHeight), Hp + " / " + maxHp, allingCenter);
-				GUI.Label(new Rect(target.x - HpWidth / 2, target.y - shieldGap, HpWidth, HpHeight), Shield + " / " + maxShield, allingCenter);
+				GUI.Label (new Rect (target.x - nameWidth / 2, target.y - nameGap, nameWidth * sizeRate, nameHeight * sizeRate), typeName, allingCenter);
+				GUI.Label (new Rect (target.x - HpWidth / 2, target.y - hpGap, HpWidth * sizeRate, HpHeight * sizeRate), Hp + " / " + maxHp, allingCenter);
+				GUI.Label(new Rect(target.x - HpWidth / 2, target.y - shieldGap, HpWidth * sizeRate, HpHeight * sizeRate), Shield + " / " + maxShield, allingCenter);
 				
-				GUI.Box (new Rect (target.x - HpWidth / 2, target.y - hpGap + 5, HpBarWidth * (Hp / maxHp), 14), "", backColor);
-				GUI.Box (new Rect(target.x - HpWidth/2, target.y - shieldGap + 3, HpBarWidth * (Shield / maxShield), 14), "", ShiledBackColor);
+				GUI.Box (new Rect (target.x - HpWidth / 2, target.y - hpGap + 5, HpBarWidth * (Hp / maxHp) * sizeRate, 14 * sizeRate), "", backColor);
+				GUI.Box (new Rect(target.x - HpWidth/2, target.y - shieldGap + 3, HpBarWidth * (Shield / maxShield) * sizeRate, 14 * sizeRate), "", ShiledBackColor);
 
 				if(remainTime != 0)
 					GUI.Box(new Rect(target.x - 35, target.y + 25, 5 + 50 * (remainTime / speedTime), 8), "", backColor);
@@ -271,5 +282,31 @@ public class UnitSystem : MonoBehaviour {
 
 	public EnemyControl[] getEnemy(){
 		return ec;
+	}
+
+	public void sizeContorl(string text){
+		if (text == "up") {
+			if(sizeRate < 1.0f){
+				sizeRate += 0.02f;
+				Debug.Log("up : "+sizeRate);
+			}
+			if(fontSizeContorl < 14){
+				if(0.79f < sizeRate  && sizeRate < 0.81f){
+					fontSizeContorl += 1;
+					Debug.Log("font up");
+				}
+			}
+		} else if(text == "down"){
+			if(sizeRate > 0.9f){
+				sizeRate -= 0.02f;
+				Debug.Log("down : "+sizeRate);
+			}
+			if(fontSizeContorl > 12){
+				if(0.79f < sizeRate  && sizeRate < 0.81f){
+					fontSizeContorl -= 1;
+					Debug.Log("font down");
+				}
+			}
+		}
 	}
 }

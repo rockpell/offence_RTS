@@ -9,6 +9,9 @@ public class LaserShooter : MonoBehaviour {
 	RaycastHit[] hit;
 
 	Vector3 targetPosition;
+	Vector3 armPositon;
+
+	int laserDamage = 10;
 
 	bool attackPermition = false;
 
@@ -31,14 +34,19 @@ public class LaserShooter : MonoBehaviour {
 		Vector3 temp = targetPosition - transform.position;
 		float distance = Vector3.Distance(transform.position, targetPosition);
 
+		bool damageDuple = false;
+
 		temp = Vector3.Normalize (temp);
-		hit = Physics.RaycastAll (transform.position, temp, distance);
+		hit = Physics.RaycastAll (armPositon, temp, distance);
 
 		if (attackPermition) {
 
 			for(var i = 0; i<hit.Length; i++){
 				if (hit[i].collider.tag == "Enemy") {
-					hit[i].collider.gameObject.SendMessage("applayDamage", 10);
+					if(!damageDuple){
+						hit[i].collider.gameObject.SendMessage("applayDamage", laserDamage);
+						damageDuple = true;
+					}
 				}
 			}
 
@@ -50,7 +58,8 @@ public class LaserShooter : MonoBehaviour {
 
 
 
-	public void laserCall(Vector3 target){
+	public void laserCall(Vector3 start, Vector3 target){
+		armPositon = start;
 		targetPosition = target;
 		attackPermition = true;
 	}
@@ -67,7 +76,7 @@ public class LaserShooter : MonoBehaviour {
 	}
 
 	void laserDraw(Vector3 target){
-		line.SetPosition (0, transform.position);
+		line.SetPosition (0, armPositon);
 		line.SetPosition (1, target);
 		line.enabled = true;
 		Invoke ("laserHide", 0.15f);

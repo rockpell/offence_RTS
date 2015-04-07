@@ -48,7 +48,12 @@ public class LaserArange : MonoBehaviour {
 		
 		if (uc != null) {
 			if (other.tag == "Enemy") {
-				uc.attackRotation (other.gameObject.transform.position, "laser");
+				Vector3 tv = other.gameObject.transform.position;
+				
+				if(other.transform.name == "enemy_1"){
+					tv.y += 30;
+				}
+				uc.attackRotation (tv, "laser");
 			}
 		}
 	}
