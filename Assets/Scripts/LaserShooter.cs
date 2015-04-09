@@ -11,7 +11,7 @@ public class LaserShooter : MonoBehaviour {
 	Vector3 targetPosition;
 	Vector3 armPositon;
 
-	int laserDamage = 10;
+	int laserDamage = 20;
 
 	bool attackPermition = false;
 

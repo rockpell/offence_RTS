@@ -10,6 +10,7 @@ public class EnemyControl : MonoBehaviour {
 	public Transform probePoint; // forward probe point
 	public Transform leftR; // left probe point
 	public Transform rightR; // right probe point
+	public Transform Arm1;
 
 	public Mesh meshToCollide1, meshToCollide2, meshToCollide3;
 
@@ -167,8 +168,12 @@ public class EnemyControl : MonoBehaviour {
 			callTemp = 0f;
 			units = us.getUnits();
 			targetPoint = calDistanceAll(units);
+//			Debug.Log(typeName+"  "+Vector3.Distance(targetPoint, transform.position));
 			if(targetPoint.y != -9999){
 				wayPointSet(targetPoint);
+				if(Vector3.Distance(targetPoint, transform.position) < 80){
+					agent.Stop();
+				}
 			}
 		}
 	}
@@ -251,9 +256,9 @@ public class EnemyControl : MonoBehaviour {
 	}
 
 	void attack1(Vector3 target){
-		GameObject abc = Instantiate (bullet1, transform.position, Quaternion.identity) as GameObject;
+		GameObject abc = Instantiate (bullet1, Arm1.position, Quaternion.identity) as GameObject;
 		BulletControl bc1 = abc.GetComponent (typeof(BulletControl)) as BulletControl;
-		bc1.setDirection (transform.position, hittingRatio(target));
+		bc1.setDirection (Arm1.position, hittingRatio(target));
 		bc1.setTarget ("Player");
 	}
 

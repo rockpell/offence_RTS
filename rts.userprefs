@@ -1,10 +1,10 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\LaserArange.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\EnemyControl.cs">
     <Files>
-      <File FileName="Assets\Scripts\UnitControl.cs" Line="361" Column="35" />
-      <File FileName="Assets\Scripts\ViewRange.cs" Line="92" Column="27" />
-      <File FileName="Assets\Scripts\LaserArange.cs" Line="44" Column="35" />
+      <File FileName="Assets\Scripts\MapSelection.cs" Line="10" Column="11" />
+      <File FileName="Assets\Scripts\PanelManager.cs" Line="75" Column="41" />
+      <File FileName="Assets\Scripts\EnemyControl.cs" Line="189" Column="2" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
